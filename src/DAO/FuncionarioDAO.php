@@ -3,6 +3,7 @@
 namespace App\DAO;
 
 use BMorais\Database\Crud;
+use App\Models\FuncionarioModel;
 
 class FuncionarioDAO extends Crud {
 
@@ -10,10 +11,9 @@ class FuncionarioDAO extends Crud {
     {
         $this->database = "intranet";
         $this->tableName = "FUNCIONARIO";
-        $this->classModel = "Funcionario";
+        $this->classModel = "FuncionarioModel";
         
     }
-
 
     public function Todos(){
         $result = $this->select('*', 'ORDER BY NOME ASC');
@@ -24,10 +24,15 @@ class FuncionarioDAO extends Crud {
         $result = $this->select('*', "WHERE TIPO = 'M' ORDER BY NOME ASC ");
         return $result;
     }
-
+        /**
+         * Undocumented function
+         *
+         * @param [type] $codfunc
+         * @return FuncionarioModel
+         */
     public function porCodfunc($codfunc){
         $result = $this->select('*', 'WHERE CODFUNC = ?', [$codfunc]);
-        return $result;
+        return $result[0];
     }
 
 }

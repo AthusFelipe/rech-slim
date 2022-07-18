@@ -1,0 +1,39 @@
+
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Recursos Humanos</title>
+    <link rel="stylesheet" type="text/css" href="/rech/public/style/bootstrap/css/bootstrap.css" >
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro:400,600&display=swap" rel="stylesheet">
+
+{% include "Funcionarios/Components/css.html" %}
+  </head>
+  <body>  
+{% include "Funcionarios/Components/barratopo.html" %}
+{% include "Funcionarios/Components/navbar.html" %}
+
+    {% block content %} {% endblock %}
+
+
+</body>
+
+{% include "Funcionarios/Components/script.html" %}
+<script>
+
+$(function() {
+  // Sidebar toggle behavior
+  $('#sidebarCollapse').on('click', function() {
+    $('#sidebar, #content').toggleClass('active');
+  });
+});
+
+</script>
+
+</html>
+
