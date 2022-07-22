@@ -9,6 +9,7 @@ use App\Controllers\Controller;
 use App\DAO\F_FeriasDAO;
 use App\DAO\F_PlanoFeriasDAO;
 use App\DAO\F_TipoFeriasDAO;
+use App\DAO\Rh_LicencaDAO;
 use App\Models\FuncionarioModel;
 use App\Models\F_ComplementoModel;
 use App\Helpers\DataTempo;
@@ -63,6 +64,7 @@ class FuncionarioController extends Controller {
         return  HttpInterface::json($response, $data);
 
 
+
 ;
     }
 
@@ -95,13 +97,8 @@ class FuncionarioController extends Controller {
                     $dataFim =DataTempo::converteDataBanco($item['DATAFIM']);
                     $item['DATAINICIO'] = $dataInicio;
                     $item['DATAFIM'] = $dataFim;
-                    $publicacao = $item;
-                   
-                    array_merge($arrayReferencia['PUBLICACOES'], $publicacao);
-
-                 unset($item);      
-
-        }
+                    
+       }
 
             }   
         
@@ -109,11 +106,19 @@ class FuncionarioController extends Controller {
         return HttpInterface::json($response, $data);
     }
 
+    
 
+    public function buscarLicencas($request, $response, $args){
+        $codfunc = $args['codfunc'];
+        $licencas = (new Rh_LicencaDAO())->buscarByCodfunc($codfunc);
+        $data = $licencas;
+        return HttpInterface::json($response, $data);
 
-    public function buscarInformacoesModeracao($codfunc){
-
+    
+    
     }
+
+   
 }
 
 

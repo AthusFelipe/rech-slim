@@ -35,4 +35,9 @@ class FuncionarioDAO extends Crud {
         return $result[0];
     }
 
+
+    public function buscarViewByCodfunc($codfunc){
+
+    }
+
 }
