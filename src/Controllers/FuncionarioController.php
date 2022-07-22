@@ -6,8 +6,12 @@ use App\Traits\ResponseHttp;
 use App\DAO\F_ComplementoDAO;
 use App\Traits\HttpInterface;
 use App\Controllers\Controller;
+use App\DAO\F_FeriasDAO;
+use App\DAO\F_PlanoFeriasDAO;
+use App\DAO\F_TipoFeriasDAO;
 use App\Models\FuncionarioModel;
 use App\Models\F_ComplementoModel;
+use App\Helpers\DataTempo;
 
 class FuncionarioController extends Controller {
 
@@ -62,4 +66,55 @@ class FuncionarioController extends Controller {
 ;
     }
 
+
+    public function buscarFerias($request, $response, $args){
+        $codfunc = $args['codfunc'];
+        $planoFerias = (new F_PlanoFeriasDAO())->buscarByCodfunc($codfunc);
+        $data = [];
+        foreach($planoFerias as $referencia){
+            $ferias = (new F_FeriasDAO())->buscarByCodplanoferias($referencia['CODFERIAS']);
+            
+          $arrayReferencia = [
+              'CODFERIAS' => $referencia['CODFERIAS'],
+              'CODUND' => $referencia['CODUND'],
+              'NOME'=>$referencia['NOME'],
+              'POSTOGRADUACAO' => $referencia['POSTOGRADUACAO'],
+              'REFERENCIA'=>$referencia['REFERENCIA'],
+              'PREVISAO_FERIAS' => DataTempo::converterNumeroEmMes3letras($referencia['MESFERIAS'])."/".$referencia['ANOFERIAS'],
+              'RESPCADASTRO' => $referencia['RESPCADASTRO']."(".DataTempo::converteDataBanco($referencia['DATACADASTRO']).")",
+              'PUBLICACOES' => $ferias,
+              
+          ];
+          array_push($data, $arrayReferencia);
+        }
+
+        foreach($data as $arrayReferencia){
+            foreach($arrayReferencia['PUBLICACOES'] as $item){
+               
+                    $dataInicio = DataTempo::converteDataBanco($item['DATAINICIO']);
+                    $dataFim =DataTempo::converteDataBanco($item['DATAFIM']);
+                    $item['DATAINICIO'] = $dataInicio;
+                    $item['DATAFIM'] = $dataFim;
+                    $publicacao = $item;
+                   
+                    array_merge($arrayReferencia['PUBLICACOES'], $publicacao);
+
+                 unset($item);      
+
+        }
+
+            }   
+        
+
+        return HttpInterface::json($response, $data);
+    }
+
+
+
+    public function buscarInformacoesModeracao($codfunc){
+
+    }
 }
+
+
+
