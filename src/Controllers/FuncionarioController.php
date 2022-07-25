@@ -4,7 +4,7 @@ namespace App\Controllers;
 use App\DAO\FuncionarioDAO;
 use App\Traits\ResponseHttp;
 use App\DAO\F_ComplementoDAO;
-use App\Traits\HttpInterface;
+use App\Traits\HttpInterface as HttpInterface;
 use App\Controllers\Controller;
 use App\DAO\F_FeriasDAO;
 use App\DAO\F_PlanoFeriasDAO;
@@ -129,15 +129,23 @@ class FuncionarioController extends Controller {
             ];
             array_push($data, $arrayLicenca);
         }
+        
         return HttpInterface::json($response, $data);
+   
   
     
     }
 
 
+
+
     public function buscarFuncionario($request, $response, $args){
         $codfunc = $args['codfunc'];
         $funcionario = (new FuncionarioDAO())->porCodfunc($codfunc);
+        if($funcionario == null){
+            return HttpInterface::error($response);
+
+        }
         $f_complemento = (new F_ComplementoDAO())->porCodfunc($codfunc);
         $viewFuncionarios = (new View_FuncionariosDAO())->buscarByCodfunc($codfunc);
         $data = [
@@ -205,6 +213,8 @@ class FuncionarioController extends Controller {
 
 
         ];
+
+        
         return HttpInterface::json($response, $data);
         
     }
